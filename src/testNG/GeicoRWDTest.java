@@ -1,23 +1,18 @@
 package testNG;
 
-import org.testng.annotations.Test;
-
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Parameters;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Parameters;
+import org.testng.annotations.Test;
 
 public class GeicoRWDTest {
 	RemoteWebDriver driver;
@@ -34,37 +29,50 @@ public class GeicoRWDTest {
 	@Test
 	public void searchGoogle() throws MalformedURLException {				
 
+		long timerHome = 0,
+			 timerSearchResult= 0; 
 		driver.get("http://www.google.com");
+		timerHome = PerfectoUtils.ocrTextCheckAndGetUXTimer(driver, "images", 99, 10);
 		applitoolsHelper.checkWindow("Google");
 		try {
 			final String searchKey = "Perfecto Mobile";
 			WebElement element = driver.findElement(By.name("q"));
 			element.sendKeys(searchKey);
 			element.submit();
-			(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
-				public Boolean apply(WebDriver d) {
-					return d.getTitle().toLowerCase().startsWith(searchKey.toLowerCase());
-				}
-			});
+			timerSearchResult = PerfectoUtils.ocrTextCheckAndGetUXTimer(driver, "testing", 99, 10);
+//			(new WebDriverWait(driver, 10)).until(new ExpectedCondition<Boolean>() {
+//				public Boolean apply(WebDriver d) {
+//					return d.getTitle().toLowerCase().startsWith(searchKey.toLowerCase());
+//				}
+//			});
 			applitoolsHelper.checkWindow("Google- search Perfecto");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		System.out.println("Done: searchGoogle");
+		System.out.println("########### ========>>>>>>>> Google timers: ");
+		System.out.println("Google Home on: "+ driver.getCapabilities().getCapability("platformName")+ " time: " +timerHome);
+		System.out.println("Google search result on: "+ driver.getCapabilities().getCapability("platformName")+ " time: " +timerSearchResult);
 	}
 
 	// Test Method, navigate to Geico and get insurance quote
 	@Test
 	public void geicoInsurance() throws MalformedURLException {
 
+		long timerHome = 0,
+			 timerProvideDetails= 0, 
+			 timerGetQuote = 0;
 		driver.get("http://www.geico.com");
+		timerHome = PerfectoUtils.ocrTextCheckAndGetUXTimer(driver, "Homeowners", 99, 10);
+		
 		applitoolsHelper.checkWindow("Gaico");
 
 		try{
 			driver.findElement(By.id("auto")).click();
 			driver.findElement(By.id("zip")).sendKeys("01434");
 			driver.findElement(By.id("submitButton")).click();
+			timerProvideDetails = PerfectoUtils.ocrTextCheckAndGetUXTimer(driver, "first", 99, 10);
 			//driver.findElement(By.id("btnSubmit")).click();
 			driver.findElement(By.xpath("//*[@id= 'CustomerForm:firstName']")).sendKeys("Dan");
 			driver.findElement(By.xpath("//*[@id= 'CustomerForm:lastName']")).sendKeys("Kaligiery");
@@ -75,6 +83,7 @@ public class GeicoRWDTest {
 			driver.findElement(By.id("CustomerForm:birthYear")).sendKeys("1981");
 
 			driver.findElement(By.id("CustomerForm:continueBtn")).click();
+			timerGetQuote = PerfectoUtils.ocrTextCheckAndGetUXTimer(driver, "model", 99, 10);
 			applitoolsHelper.checkWindow("Geico get quote");
 
 			//driver.findElement(By.id("btnSubmit"));
@@ -83,6 +92,13 @@ public class GeicoRWDTest {
 		}
 
 		System.out.println("Done: geicoInsurance");
+		System.out.println("########### ========>>>>>>>> Geico timers: ");
+		System.out.println("Geico Home on: "+ driver.getCapabilities().getCapability("platformName")+ " time: " +timerHome);
+		System.out.println("Geico get details on: "+ driver.getCapabilities().getCapability("platformName")+ " time: " +timerProvideDetails);
+		System.out.println("Geico get Vehicle details on: "+ driver.getCapabilities().getCapability("platformName")+ " time: " +timerGetQuote);
+		
+		
+		
 	}
 
 	@AfterTest
