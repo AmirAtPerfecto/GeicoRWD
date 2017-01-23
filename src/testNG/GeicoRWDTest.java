@@ -66,9 +66,9 @@ public class GeicoRWDTest {
 			driver.findElement(By.id("zip")).sendKeys("01434");
 			driver.findElement(By.id("submitButton")).click();
 			//driver.findElement(By.id("btnSubmit")).click();
-			driver.findElement(By.xpath("//*[@id= 'CustomerForm:firstName']")).sendKeys("Eran");
-			driver.findElement(By.xpath("//*[@id= 'CustomerForm:lastName']")).sendKeys("Kinsbruner");
-			driver.findElement(By.xpath("//*[@id= 'CustomerForm:customerMailingAddress']")).sendKeys("Lexington");
+			driver.findElement(By.xpath("//*[@id= 'CustomerForm:firstName']")).sendKeys("Dan");
+			driver.findElement(By.xpath("//*[@id= 'CustomerForm:lastName']")).sendKeys("Kaligiery");
+			driver.findElement(By.xpath("//*[@id= 'CustomerForm:customerMailingAddress']")).sendKeys("Woburn");
 
 			driver.findElement(By.id("CustomerForm:birthMonth")).sendKeys("8");
 			driver.findElement(By.id("CustomerForm:birthDay")).sendKeys("3");
