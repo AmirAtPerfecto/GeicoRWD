@@ -12,7 +12,7 @@
       		<class name="testNG.GeicoRWDTest"/>
 		</classes>
 	</test>
- 	
+	
 	<test name="Test iPhone6 Plus">
 		<parameter name="platformName" value="iOS" />
 		<parameter name="deviceName" value="[DEVICE ID]" />
