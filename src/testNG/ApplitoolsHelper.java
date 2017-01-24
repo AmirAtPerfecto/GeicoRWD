@@ -12,16 +12,16 @@ public final class ApplitoolsHelper {
 	private static BatchInfo batch;
 
 	public static void setBatch(String batchName) {
+		//Added support for Jenkins plugin, if running from Jenkins. 
+		String jenkinsBatchId = System.getenv("APPLITOOLS_BATCH_ID");
 		String key = System.getenv().get("APPLITOOLS_API_KEY");
-		if (null != key) {
-			batch = new BatchInfo(batchName);
 
-			//Added support for Jenkins plugin, if running from Jenkins. 
-			String jenkinsBatchId = System.getenv("APPLITOOLS_BATCH_ID");
-
-			if (null != jenkinsBatchId)
-				batch.setId(jenkinsBatchId);
-		}
+		if (null != jenkinsBatchId)
+			batch.setId(jenkinsBatchId);
+		else
+			if (null != key) 
+				batch = new BatchInfo(batchName);
+		
 	}
 
 	public static BatchInfo getBatchInfo() {
